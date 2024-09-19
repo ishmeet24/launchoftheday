@@ -32,9 +32,19 @@
         }
         .video-section {
             width: 48%;
+            display: flex;
+            flex-direction: column;
         }
-        #video-container {
+        #video-container, #video-container-2 {
             margin-bottom: 20px;
+        }
+        .vote-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px; /* Add space between vote section and content */
+        }
+        .content-section {
+            flex-grow: 1;
         }
         iframe {
             max-width: 100%;
@@ -50,11 +60,6 @@
         }
         .creator a:hover, .company a:hover {
             text-decoration: underline;
-        }
-        .vote-section {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
         }
         .vote-button {
             background-color: #4CAF50;
@@ -89,9 +94,11 @@
                 <span class="vote-count" id="vote-count-1">0</span>
             </div>
             
-            <p class="creator">shipped by: <a href="https://x.com/kirstenrpomales" target="_blank">kirsten pomales</a></p>
-            <p class="company">project: <a href="https://www.revyou.org/" target="_blank">Revyou</a></p>
-            <p class="oneliner">one liner: collect, manage and share client reviews</p>
+            <div class="content-section">
+                <p class="creator">shipped by: <a href="https://x.com/kirstenrpomales" target="_blank">kirsten pomales</a></p>
+                <p class="company">project: <a href="https://www.revyou.org/" target="_blank">Revyou</a></p>
+                <p class="oneliner">one liner: collect, manage and share client reviews</p>
+            </div>
         </div>
         
         <div class="video-section">
@@ -104,9 +111,11 @@
                 <span class="vote-count" id="vote-count-2">0</span>
             </div>
             
-            <p class="creator">shipped by: <a href="#" target="_blank">Another Creator</a></p>
-            <p class="company">project: <a href="#" target="_blank">Another Project</a></p>
-            <p class="oneliner">one liner: Brief description of the second project</p>
+            <div class="content-section">
+                <p class="creator">shipped by: <a href="#" target="_blank">Another Creator</a></p>
+                <p class="company">project: <a href="#" target="_blank">Another Project</a></p>
+                <p class="oneliner">one liner: Brief description of the second project</p>
+            </div>
         </div>
     </div>
 
