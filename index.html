@@ -13,20 +13,27 @@
         body {
             font-family: Arial, sans-serif;
             background-color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             padding: 20px;
         }
         h1 {
             color: #333;
-        }
-        #video-container {
-            margin: 20px 0;
+            text-align: center;
         }
         .subtitle {
             color: #666;
-            margin-top: -10px;
+            text-align: center;
+            margin-bottom: 40px; /* Increased from 20px to 40px */
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .video-section {
+            width: 48%;
+        }
+        #video-container {
             margin-bottom: 20px;
         }
         iframe {
@@ -36,7 +43,6 @@
             font-style: italic;
             color: #666;
             margin-top: 10px;
-            margin-bottom: 10px;
         }
         .creator a, .company a {
             color: #0066cc;
@@ -45,20 +51,120 @@
         .creator a:hover, .company a:hover {
             text-decoration: underline;
         }
+        .vote-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .vote-button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        .vote-count {
+            font-size: 18px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
-    <h1>launch of the day</h1>
-    <p class="subtitle">we show you the best launch of the day to give you some inspo</p>
+    <h1>twitter launch of the day</h1>
+    <p class="subtitle">vote for your favorite launch</p>
     
-    <div id="video-container">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/j_l2MYCpbic" frameborder="0" allowfullscreen></iframe>
+    <div class="container">
+        <div class="video-section">
+            <div id="video-container">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/j_l2MYCpbic" frameborder="0" allowfullscreen></iframe>
+            </div>
+            
+            <div class="vote-section">
+                <button class="vote-button" onclick="vote(1)">Vote</button>
+                <span class="vote-count" id="vote-count-1">0</span>
+            </div>
+            
+            <p class="creator">shipped by: <a href="https://x.com/kirstenrpomales" target="_blank">kirsten pomales</a></p>
+            <p class="company">project: <a href="https://www.revyou.org/" target="_blank">Revyou</a></p>
+            <p class="oneliner">one liner: collect, manage and share client reviews</p>
+        </div>
+        
+        <div class="video-section">
+            <div id="video-container-2">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/ANOTHER_VIDEO_ID" frameborder="0" allowfullscreen></iframe>
+            </div>
+            
+            <div class="vote-section">
+                <button class="vote-button" onclick="vote(2)">Vote</button>
+                <span class="vote-count" id="vote-count-2">0</span>
+            </div>
+            
+            <p class="creator">shipped by: <a href="#" target="_blank">Another Creator</a></p>
+            <p class="company">project: <a href="#" target="_blank">Another Project</a></p>
+            <p class="oneliner">one liner: Brief description of the second project</p>
+        </div>
     </div>
-    
-    <p class="creator">shipped by: <a href="https://x.com/kirstenrpomales" target="_blank">kirsten pomales</a></p>
-    <p class="company">project: <a href="https://www.revyou.org/" target="_blank">Revyou</a></p>
-    <p class="oneliner">one liner: collect, manage and share client reviews</p>
 
+    <script>
+        // Generate a unique identifier for the current set of videos
+        const videoSet = 'video_set_' + document.getElementById('video-container').querySelector('iframe').src + 
+                         '_' + document.getElementById('video-container-2').querySelector('iframe').src;
+
+        function vote(videoId) {
+            const votedKey = 'voted';
+            const votedFor = localStorage.getItem(votedKey);
+            const lastVideoSet = localStorage.getItem('lastVideoSet');
+
+            if (votedFor && lastVideoSet === videoSet) {
+                alert("You've already voted for this set of videos!");
+                return;
+            }
+
+            const countElement = document.getElementById(`vote-count-${videoId}`);
+            let count = parseInt(countElement.innerText);
+            count++;
+            countElement.innerText = count;
+
+            localStorage.setItem(votedKey, videoId.toString());
+            localStorage.setItem('lastVideoSet', videoSet);
+            
+            disableAllButtons();
+        }
+
+        function disableAllButtons() {
+            const buttons = document.querySelectorAll('.vote-button');
+            buttons.forEach(button => {
+                button.disabled = true;
+                button.style.backgroundColor = '#ccc';
+                button.style.cursor = 'default';
+            });
+        }
+
+        function checkVoteStatus() {
+            const votedFor = localStorage.getItem('voted');
+            const lastVideoSet = localStorage.getItem('lastVideoSet');
+
+            if (votedFor && lastVideoSet === videoSet) {
+                disableAllButtons();
+                const votedButton = document.querySelector(`button[onclick="vote(${votedFor})"]`);
+                if (votedButton) {
+                    votedButton.style.backgroundColor = '#4CAF50';
+                    votedButton.textContent = 'Voted';
+                }
+            } else if (lastVideoSet !== videoSet) {
+                // If the video set has changed, clear the previous vote
+                localStorage.removeItem('voted');
+                localStorage.removeItem('lastVideoSet');
+            }
+        }
+
+        window.onload = checkVoteStatus;
+    </script>
 </body>
 </html>
 
